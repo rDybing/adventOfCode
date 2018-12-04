@@ -34,7 +34,7 @@ func main() {
 				}
 			}
 			freqMap[result] = number
-			fmt.Printf("%4v : %6v : %6v\n", i, freqChange[i], result)
+			fmt.Printf("%4d : %6s : %6d\n", i, freqChange[i], result)
 		}
 	}
 }
