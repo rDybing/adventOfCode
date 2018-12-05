@@ -24,11 +24,38 @@ type rectT struct {
 func main() {
 
 	coords, _ := fileToLines("day3data.txt")
+	var coordStr string
 	cutOuts := getCutOuts(coords)
+	var wasted int
+	var found bool
+	var squaresMap map[string]bool
+	squaresMap = make(map[string]bool)
 
 	for i := range cutOuts {
-		fmt.Printf("%3d - X: %4d - Y: %4d | W: %3d - H: %3d\n", i, cutOuts[i].x, cutOuts[i].y, cutOuts[i].w, cutOuts[i].h)
+		x := cutOuts[i].x
+		y := cutOuts[i].y
+		for xw := 0; xw < cutOuts[i].w-1; xw++ {
+			for yh := 0; yh < cutOuts[i].w-1; yh++ {
+				coordStr = fmt.Sprintf("%d:%d", x+xw, y+yh)
+				if i > 0 {
+					if _, ok := squaresMap[coordStr]; ok {
+						if squaresMap[coordStr] == false {
+							wasted++
+							found = true
+							delete(squaresMap, coordStr)
+							squaresMap[coordStr] = true
+							fmt.Printf("%4d - %7s - Wasted square inches: %d\n", i, coordStr, wasted)
+						}
+					}
+				}
+				if !found {
+					squaresMap[coordStr] = false
+					found = false
+				}
+			}
+		}
 	}
+	fmt.Printf("Wasted in total: %d\n", wasted)
 
 	/*
 		for {
