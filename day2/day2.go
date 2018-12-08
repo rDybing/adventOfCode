@@ -15,8 +15,7 @@ func main() {
 }
 
 func part1(boxID []string) {
-	var resultTwo int
-	var resultThree int
+	var resultTwo, resultThree int
 
 	for i := range boxID {
 		getTwo, getThree := getRepeatsFromID(boxID[i])

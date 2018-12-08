@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strconv"
-	"strings"
 )
 
 type gridT struct {
@@ -15,17 +13,18 @@ type gridT struct {
 }
 
 type rectT struct {
-	x int
-	y int
-	w int
-	h int
+	id int
+	x  int
+	y  int
+	w  int
+	h  int
 }
 
 func main() {
 
 	coords, _ := fileToLines("day3data.txt")
-	var coordStr string
 	cutOuts := getCutOuts(coords)
+	var coordStr string
 	var wasted int
 	var found bool
 	var squaresMap map[string]bool
@@ -56,45 +55,17 @@ func main() {
 		}
 	}
 	fmt.Printf("Wasted in total: %d\n", wasted)
-
-	/*
-		for {
-			for i := range freqChange {
-				numString = strings.Replace(freqChange[i], "+", "", -1)
-				numString = strings.Replace(freqChange[i], "-", "", -1)
-				number, _ := strconv.ParseInt(numString, 10, 64)
-				if strings.Contains(freqChange[i], "+") {
-					result += number
-				} else {
-					result -= number
-				}
-				if i > 0 {
-					if _, ok := freqMap[result]; ok {
-						fmt.Printf("- Frequency %v repeated!\n", result)
-						close()
-					}
-				}
-				freqMap[result] = number
-				fmt.Printf("%4d : %6s : %6d\n", i, freqChange[i], result)
-			}
-		}
-	*/
 }
 
 func getCutOuts(in []string) []rectT {
 	var out []rectT
-	var outTemp rectT
+	var ot rectT
 	for i := range in {
-		op1 := strings.Split(in[i], "@")
-		op2 := strings.Replace(op1[1], " ", "", -1)
-		coords := strings.Split(op2, ":")
-		xy := strings.Split(coords[0], ",")
-		wl := strings.Split(coords[1], "x")
-		outTemp.x, _ = strconv.Atoi(xy[0])
-		outTemp.y, _ = strconv.Atoi(xy[1])
-		outTemp.w, _ = strconv.Atoi(wl[0])
-		outTemp.h, _ = strconv.Atoi(wl[1])
-		out = append(out, outTemp)
+		_, err := fmt.Sscanf(in[i], "#%d @ %d,%d: %dx%d", &ot.id, &ot.x, &ot.y, &ot.w, &ot.h)
+		if err != nil {
+			fmt.Printf("could not parse %s : %v\n", in[i], err)
+		}
+		out = append(out, ot)
 	}
 	return out
 }
